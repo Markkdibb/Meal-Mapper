@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder with Ingredient Map - Manolo Fortich, Bukidnon</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        #recipeList {
+            margin-bottom: 20px;
+        }
+        #recipeList button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            background-color: #2196F3;
+            color: white;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #recipeList button:hover {
+            background-color: #0b7dda;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px 20px;
+            margin: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #content {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        #map {
+            height: 400px;
+            width: 50%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #ingredientsSection {
+            width: 45%;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+        #ingredientsSection h2 {
+            margin-top: 0;
+        }
+        #ingredientsList {
+            list-style-type: none;
+            padding: 0;
+        }
+        #ingredientsList li {
+            background: #f0f0f0;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #ingredientsList li:hover {
+            background: #e0e0e0;
+        }
+        .popup-image {
+            width: 100px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Recipe Finder with Ingredient Map - Manolo Fortich, Bukidnon</h1>
+    <p>Click on a recipe below or search for one to view ingredients on the right. Click an ingredient to see its locations on the map.</p>
+
+    <div id="recipeList"></div>
+
+    <div class="container">
+        <input id="recipeInput" type="text" placeholder="Enter a recipe (e.g., Chicken Curry)">
+        <button onclick="searchRecipe()">Search Recipe</button>
+    </div>
+
+    <div id="content">
+        <div id="map"></div>
+        <div id="ingredientsSection" style="display: none;">
+            <h2 id="recipeTitle"></h2>
+            <h3>Ingredients (click to view locations):</h3>
+            <ul id="ingredientsList"></ul>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+    let images = {};
+
+    // Load images.json (assuming it's available)
+    fetch("images.json")
+        .then(response => response.json())
+        .then(data => {
+            images = data;
+        })
+        .catch(err => console.error("Failed to load images.json:", err));
+
+    // Map layers
+    const terrainLayer = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+        {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }
+    );
+
+    const satelliteLayer = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', 
+        {
+            maxZoom: 19,
+            attribution: 'Tiles © Esri'
+        }
+    );
+
+    const map = L.map('map', {
+        center: [8.3667, 124.8667],
+        zoom: 13,
+        layers: [terrainLayer]   
+    });
+
+    const baseMaps = {
+        "Terrain Map": terrainLayer,
+        "Satellite Map": satelliteLayer
+    };
+
+    L.control.layers(baseMaps).addTo(map);
+
+    let markers = [];
+
+    const mockRecipes = {
+        "chicken curry": {
+            title: "Chicken Curry",
+            ingredients: [
+                { name: "Chicken", price: 250, locations: [
+                    { lat: 8.3672, lng: 124.8672, store: "Prince Hypermart", price: 250, imageKey: "prince" }, 
+                    { lat: 8.3700, lng: 124.8700, store: "Local Grocery Store", price: 240, imageKey: "grocery" }
+                ]},
+                { name: "Curry Powder", price: 50, locations: [
+                    { lat: 8.3656, lng: 124.8700, store: "Bukidnon Supermart", price: 50, imageKey: "supermart" },  
+                    { lat: 8.3656, lng: 124.8750, store: "Farmers' Coop", price: 55, imageKey: "coop" }
+                ]},
+                { name: "Onion", price: 30, locations: [
+                    { lat: 8.365575363390583, lng: 124.86521825090732, store: "Public Market", price: 30, imageKey: "public_market" },   
+                    { lat: 8.367142520246292, lng: 124.86719000984846, store: "Local Vendor", price: 35, imageKey: "vendor" }
+                ]}
+            ]
+        },
+        "pasta": {
+            title: "Pasta",
+            ingredients: [
+                { name: "Pasta", price: 80, locations: [
+                    { lat: 8.3667, lng: 124.8667, store: "Manolo Fortich Public Market", price: 80, imageKey: "market" },
+                    { lat: 8.3700, lng: 124.8700, store: "Local Grocery Store", price: 75, imageKey: "grocery" }
+                ]},
+                { name: "Tomato Sauce", price: 60, locations: [
+                    { lat: 8.3650, lng: 124.8650, store: "Bukidnon Supermart", price: 60, imageKey: "supermart" },
+                    { lat: 8.3750, lng: 124.8750, store: "Farmers' Coop", price: 65, imageKey: "coop" }
+                ]}
+            ]
+        }
+    };
+
+   
+    const recipeListDiv = document.getElementById('recipeList');
+    Object.keys(mockRecipes).forEach(key => {
+        const button = document.createElement('button');
+        button.textContent = mockRecipes[key].title;
+        button.onclick = () => searchRecipe(key);
+        recipeListDiv.appendChild(button);
+    });
+
+    function searchRecipe(recipeKey = null) {
+        let query;
+        if (recipeKey) {
+            query = recipeKey;
+        } else {
+            query = document.getElementById('recipeInput').value.toLowerCase().trim();
+        }
+
+        if (!query) {
+            alert("Please enter a recipe name or click on a recipe.");
+            return;
+        }
+
+        const recipe = mockRecipes[query];
+        if (!recipe) {
+            alert("Recipe not found. Try 'Chicken Curry' or 'Pasta'.");
+            return;
+        }
+
+        
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+
+        
+        document.getElementById('recipeTitle').textContent = recipe.title;
+        const ingredientsList = document.getElementById('ingredientsList');
+        ingredientsList.innerHTML = '';
+
+        recipe.ingredients.forEach(ing => {
+            const li = document.createElement('li');
+            li.textContent = `${ing.name} - Approx. ₱${ing.price}`;
+            li.onclick = () => showIngredientLocations(ing);
+            ingredientsList.appendChild(li);
+        });
+
+        document.getElementById('ingredientsSection').style.display = 'block';
+    }
+
+    function showIngredientLocations(ingredient) {
+        
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+
+       
+        ingredient.locations.forEach(loc => {
+            const imgUrl = images[loc.imageKey] || "https://via.placeholder.com/100x75?text=No+Image";
+            const popup = `
+                <img src="${imgUrl}" class="popup-image">
+                <b>${loc.store}</b><br>
+                ${ingredient.name}: ₱${loc.price}
+            `;
+            const marker = L.marker([loc.lat, loc.lng]).addTo(map).bindPopup(popup);
+            markers.push(marker);
+        });
+
+        
+        if (markers.length > 0) {
+            const group = new L.featureGroup(markers);
+            map.fitBounds(group.getBounds());
+        }
+    }
+    </script>
+
+</body>
+</html>
