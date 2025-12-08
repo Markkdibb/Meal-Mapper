@@ -4,10 +4,12 @@
     "Ck Mart": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=AJ45CMLb28h2oLxlnFOIfQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=122.12838&pitch=0&thumbfov=100",
     "coop": "https://via.placeholder.com/100x75?text=Farmers+Coop",
     "Public Market": "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzbgfQ3c6nsuptYitwrD2Fi2VKKbJwLOgIqVIxTXp7__-JXIvGtOZQ2dT10h3o8ugJ-zxeNUE11shfxvEtsb49ZUAQPYp62rlqz82K2RBk0_HasujUOqFoDU5ZXJhl9Pje_FESz=w533-h240-k-no",
-    "Local Vendor": "Local Vendor.jpg",
-    "market": "https://via.placeholder.com/100x75?text=Public+Market", 
+    "Local Vendor": "Local Vendor.jpg", 
     "Chick Inn" : "https://lh3.googleusercontent.com/p/AF1QipNmE8Wt0XTpMA_zg2M6mCDeycHFEzp_i6DbW830=w408-h516-k-no",
-    "Aj's Chicken Station" : "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=uiwMfJTFrD3Nd5y0cBaeKA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=163.66882&pitch=0&thumbfov=100"
+    "Aj's Chicken Station" : "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=uiwMfJTFrD3Nd5y0cBaeKA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=163.66882&pitch=0&thumbfov=100",
+    "FruitStand(Hypermart)": "FruitStand(Hypermart).png",
+    "PhebusFruitStore": "PhebusFruitStore.png",
+    "LocalFruitStand": "LocalFruitStand.png"
 }
 
 
