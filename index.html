@@ -97,6 +97,12 @@
         #ingredientsList li:hover {
             background: #e0e0e0;
         }
+        #procedureList {
+            padding-left: 18px;
+        }
+        #procedureList li {
+            margin: 6px 0;
+        }
         .popup-image {
             width: 100px;
             height: 75px;
@@ -132,6 +138,8 @@
             <h2 id="recipeTitle"></h2>
             <h3>Ingredients (click to view locations):</h3>
             <ul id="ingredientsList"></ul>
+            <h3>Cooking Procedure:</h3>
+            <ol id="procedureList"></ol>
         </div>
     </div>
 
@@ -242,6 +250,14 @@
         const mockRecipes = {
             "chicken curry": {
                 title: "Chicken Curry",
+                procedure: [
+                    "Sear chicken in oil until lightly browned; set aside.",
+                    "Sauté onions and garlic, then stir in curry powder for 1 minute.",
+                    "Return chicken, add coconut milk or water, and simmer until tender.",
+                    "Season with salt and pepper; add more curry powder to taste.",
+                    "Let the sauce thicken, stirring occasionally to prevent sticking.",
+                    "Serve hot with steamed rice."
+                ],
                 ingredients: [
                     { name: "Chicken", price: 250, locations: [
                         { lat: 8.3672, lng: 124.8672, store: "Prince Hypermart", price: 250, imageKey: "Prince Hypermart" }, 
@@ -262,6 +278,14 @@
             },
             "pasta": {
                 title: "Pasta",
+                procedure: [
+                    "Boil pasta in salted water until al dente; drain and reserve a little pasta water.",
+                    "Sauté garlic and onions, then pour in tomato sauce.",
+                    "Season with salt, pepper, and a pinch of sugar; simmer 5–10 minutes.",
+                    "Toss cooked pasta into the sauce, adding reserved water if needed.",
+                    "Adjust seasoning, then drizzle with a little oil for shine.",
+                    "Serve warm and top with cheese if available."
+                ],
                 ingredients: [
                     { name: "Pasta", price: 80, locations: [
                         { lat: 8.3657, lng: 124.8651, store: "Manolo Fortich Public Market", price: 80, imageKey: "Public Market" },
@@ -283,6 +307,14 @@
 
             "fruit salad":{
                 title: "Fruit Salad",
+                procedure: [
+                    "Chill all fruits and cream for at least 30 minutes.",
+                    "Peel and dice fruits into bite-sized pieces; drain excess juice.",
+                    "Combine fruits in a bowl, then fold in condensed milk and mayonnaise or cream.",
+                    "Add a pinch of salt or calamansi juice to balance sweetness if desired.",
+                    "Mix gently to avoid mashing the fruits.",
+                    "Refrigerate 1–2 hours before serving for best flavor."
+                ],
                 ingredients:[
                     {name: "Mango", price: 100, locations:[
                         {lat:8.36736, lng:124.86700, store:"Fruit Stand Near Hypermart", price:95, imageKey:"FruitStand(Hypermart)"},
@@ -320,11 +352,20 @@
                     },
     "humba": {
     title: "Humba",
+    procedure: [
+        "Marinate pork belly with soy sauce, vinegar, garlic, pepper, and a pinch of sugar for 20–30 minutes.",
+        "Sear pork until lightly browned to render some fat.",
+        "Add marinade, water, and bay leaves; simmer until pork is tender.",
+        "Stir in banana blossoms, black beans, and star anise; continue simmering.",
+        "Add brown sugar and pineapple juice, then reduce until sauce is glossy.",
+        "Adjust salt and vinegar to taste; serve with rice."
+    ],
     ingredients: [
         { name: "Pork Belly", price: 280, locations: [
-            { lat: 8.3672, lng: 124.8672, store: "Prince Hypermart", price: 280, imageKey: "prince" },
-            { lat: 8.3654, lng: 124.8651, store: "Local Meat Shop", price: 270, imageKey: "grocery" },
-            { lat: 8.3679, lng: 124.8672, store: "Alexa's Meatshop", price: 275, imageKey: "central_market" }
+            { lat: 8.3672, lng: 124.8672, store: "Prince Hypermart", price: 280, imageKey: "Prince Hypermart" },
+            { lat: 8.3654, lng: 124.8651, store: "Local Meat Shop", price: 270, imageKey: "Public Market" },
+            { lat: 8.36547309038391, lng: 124.86526004088616, store: "Stockyards Meatshop", price: 270, imageKey: "Stockyard" },
+            { lat: 8.3679, lng: 124.8672, store: "Alexa's Meatshop", price: 275, imageKey: "AlexasMeatshop" }
         ]},
 
         { name: "Soy Sauce", price: 20, locations: [
@@ -346,7 +387,7 @@
         ]},
 
         { name: "Banana Blossoms", price: 25, locations: [
-         { lat: 8.3672, lng: 124.8672, store: "Prince Hypermart", price: 25, imageKey: "prince" },
+         { lat: 8.3672, lng: 124.8672, store: "Prince Hypermart", price: 25, imageKey: "Prince Hypermart" },
          { lat: 8.368036316822822, lng: 124.86738480853599, store: "Ck Mart", price: 22, imageKey: "Ck Mart" },
          { lat: 8.365606756516602, lng: 124.86520285192277, store: "Manolo Fortich Public Market", price: 20, imageKey: "Public Market" },
          { lat: 8.366676076358782, lng: 124.8647116150032, store: "Local Vendor", price: 20, imageKey: "Local Vendor" }
@@ -385,11 +426,20 @@
     },
     "beef steak": {
     title: "Beef Steak (Bistek)",
+    procedure: [
+        "Marinate sliced beef in soy sauce, calamansi juice, pepper, and garlic for 15–30 minutes.",
+        "Sear beef over high heat until just browned; set aside.",
+        "In the same pan, sauté onions until softened, then return beef.",
+        "Pour in marinade and a little water; simmer briefly until beef is tender.",
+        "Season to taste and let sauce reduce slightly.",
+        "Top with onion rings and serve hot with rice."
+    ],
     ingredients: [
         { name: "Beef", price: 320, locations: [
             { lat: 8.3672, lng: 124.8672, store: "Prince Hypermart", price: 320, imageKey: "Prince Hypermart" },
-            { lat: 8.3654, lng: 124.8651, store: "Local Meat Shop", price: 310, imageKey: "grocery" },
-            { lat: 8.3679, lng: 124.8672, store: "Alexa's Meatshop", price: 315, imageKey: "central_market" }
+            { lat: 8.36547309038391, lng: 124.86526004088616, store: "Stockyards Meatshop", price: 310, imageKey: "Stockyard" },
+            { lat: 8.3654, lng: 124.8651, store: "Local Meat Shop", price: 310, imageKey: "Public Market" },
+            { lat: 8.3679, lng: 124.8672, store: "Alexa's Meatshop", price: 315, imageKey: "AlexasMeatshop" }
         ]},
 
         { name: "Soy Sauce", price: 20, locations: [
@@ -470,13 +520,21 @@
             
             document.getElementById('recipeTitle').textContent = recipe.title;
             const ingredientsList = document.getElementById('ingredientsList');
+            const procedureList = document.getElementById('procedureList');
             ingredientsList.innerHTML = '';
+            procedureList.innerHTML = '';
 
             recipe.ingredients.forEach(ing => {
                 const li = document.createElement('li');
                 li.textContent = `${ing.name} - Approx. ₱${ing.price}`;
                 li.onclick = () => showIngredientLocations(ing);
                 ingredientsList.appendChild(li);
+            });
+
+            (recipe.procedure || []).forEach(step => {
+                const li = document.createElement('li');
+                li.textContent = step;
+                procedureList.appendChild(li);
             });
 
             document.getElementById('ingredientsSection').style.display = 'block'; 
