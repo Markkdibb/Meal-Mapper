@@ -38,6 +38,9 @@
             line-height: 1.6;
             color: #555;
         }
+        .content p {
+            text-align: justify;
+        }
         button {
             padding: 12px 20px;
             margin: 10px;
@@ -68,6 +71,11 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 10px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .team-member img:hover {
+            transform: scale(1.1);
         }
         .team-member h3 {
             color: #333;
@@ -76,6 +84,39 @@
         .team-member p {
             font-size: 14px;
             color: #777;
+            text-align: center;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 5px;
+        }
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #fff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -102,17 +143,17 @@
         <h2>Our Team</h2>
         <div class="team">
             <div class="team-member">
-                <img src="https://scontent.fmnl25-3.fna.fbcdn.net/v/t39.30808-6/577591583_1483243039604798_2076450418115404895_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG8kET6fn8HeEVGQ5QV_CbNRQXCuLs7HNhFBcK4uzsc2NfNrCuwwlPQZbQYCE-OGIG6ZbjkDEYnm4J2y6ge2r_e&_nc_ohc=Cu7_ebZN7ysQ7kNvwGMUkvZ&_nc_oc=AdniTQie6_nYMeGlsu_ceZhaozFdQJfao2EO9zhtWFrTvHpxPwtAm9mPV7xA7fXeTJs&_nc_zt=23&_nc_ht=scontent.fmnl25-3.fna&_nc_gid=-UUP5Z1VXKuzu0GVGXx9sg&oh=00_AfmNdEVCLEjsjgPwUcWsv8h-aXFGZ90_WjOqDVE8rozR7A&oe=693D4CAB" alt="Marc">
+                <img src="https://scontent.fmnl25-3.fna.fbcdn.net/v/t39.30808-6/577591583_1483243039604798_2076450418115404895_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG8kET6fn8HeEVGQ5QV_CbNRQXCuLs7HNhFBcK4uzsc2NfNrCuwwlPQZbQYCE-OGIG6ZbjkDEYnm4J2y6ge2r_e&_nc_ohc=Cu7_ebZN7ysQ7kNvwGMUkvZ&_nc_oc=AdniTQie6_nYMeGlsu_ceZhaozFdQJfao2EO9zhtWFrTvHpxPwtAm9mPV7xA7fXeTJs&_nc_zt=23&_nc_ht=scontent.fmnl25-3.fna&_nc_gid=-UUP5Z1VXKuzu0GVGXx9sg&oh=00_AfmNdEVCLEjsjgPwUcWsv8h-aXFGZ90_WjOqDVE8rozR7A&oe=693D4CAB" alt="Marc" onclick="openModal(this.src)">
                 <h3>Marc Dave Tangaro</h3>
                 <p>Student</p>
             </div>
             <div class="team-member">
-                <img src="https://scontent.fmnl25-4.fna.fbcdn.net/v/t39.30808-6/471858908_2273338553047238_4454577596557856738_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG4PhanserSv514X3Erw1zmqiOg1x99ZrKqI6DXH31msqXsMUiqpnaZXGPCPeZ9b2_coDJxV0xObThopMkIyCGD&_nc_ohc=HtZZqcFDvqUQ7kNvwFviMYy&_nc_oc=AdkpD_U7FitFYbI1qiKKbHM8O9twRsc3lGIDLxDoJTfDA7ZP_4MxzTbivLgrWa1JlaI&_nc_zt=23&_nc_ht=scontent.fmnl25-4.fna&_nc_gid=NL2ZnhR8VCmuW45_lVTLEw&oh=00_AfkdGRO1ybIpvT4wNcH6eUwUddHE7LnzHM4obD9dk1ZY_Q&oe=693D2388" alt="Mikko">
+                <img src="https://scontent.fmnl25-4.fna.fbcdn.net/v/t39.30808-6/471858908_2273338553047238_4454577596557856738_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeG4PhanserSv514X3Erw1zmqiOg1x99ZrKqI6DXH31msqXsMUiqpnaZXGPCPeZ9b2_coDJxV0xObThopMkIyCGD&_nc_ohc=HtZZqcFDvqUQ7kNvwFviMYy&_nc_oc=AdkpD_U7FitFYbI1qiKKbHM8O9twRsc3lGIDLxDoJTfDA7ZP_4MxzTbivLgrWa1JlaI&_nc_zt=23&_nc_ht=scontent.fmnl25-4.fna&_nc_gid=NL2ZnhR8VCmuW45_lVTLEw&oh=00_AfkdGRO1ybIpvT4wNcH6eUwUddHE7LnzHM4obD9dk1ZY_Q&oe=693D2388" alt="Mikko" onclick="openModal(this.src)">
                 <h3>Mikko Louise Pelvera</h3>
                 <p>Student</p>
             </div>
             <div class="team-member">
-                <img src="https://scontent.fmnl25-7.fna.fbcdn.net/v/t39.30808-6/571260989_1767194763946483_417048408462965783_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEopmTtX4bnYp5VV8LOy-Cm-oXqqfwfwnf6heqp_B_CdxucbrB99uMTRHddhPk-Jd6-fPtfWMQMVHu65ZOrHKfj&_nc_ohc=Ig7bCA3_hGAQ7kNvwEuzc-t&_nc_oc=AdlDUu5mp5dy0rlpfyWNA8pwEuvKrDHcAlUGAC_E8zuHaBwSGvGmBABqEZ-3qV2Oza8&_nc_zt=23&_nc_ht=scontent.fmnl25-7.fna&_nc_gid=iYcj0ke6pmz-hFaNwKzTxQ&oh=00_Afk3gYZn2W8ZaAPk8q-UhA35usrXwt-f25Qok6YIa4nGyQ&oe=693D22F2" alt="Hamed Ansari">
+                <img src="https://scontent.fmnl25-7.fna.fbcdn.net/v/t39.30808-6/571260989_1767194763946483_417048408462965783_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEopmTtX4bnYp5VV8LOy-Cm-oXqqfwfwnf6heqp_B_CdxucbrB99uMTRHddhPk-Jd6-fPtfWMQMVHu65ZOrHKfj&_nc_ohc=Ig7bCA3_hGAQ7kNvwEuzc-t&_nc_oc=AdlDUu5mp5dy0rlpfyWNA8pwEuvKrDHcAlUGAC_E8zuHaBwSGvGmBABqEZ-3qV2Oza8&_nc_zt=23&_nc_ht=scontent.fmnl25-7.fna&_nc_gid=iYcj0ke6pmz-hFaNwKzTxQ&oh=00_Afk3gYZn2W8ZaAPk8q-UhA35usrXwt-f25Qok6YIa4nGyQ&oe=693D22F2" alt="Hamed Ansari" onclick="openModal(this.src)">
                 <h3>Hamed Ansari Halad</h3>
                 <p>Student</p>
             </div>
@@ -124,5 +165,30 @@
         <p>Thank you for using Meal Mapper – happy cooking!</p>
     </div>
 
+    <div id="myModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImg" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        function openModal(src) {
+            document.getElementById('modalImg').src = src;
+            document.getElementById('myModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('myModal')) {
+                closeModal();
+            }
+        }
+    </script>
+
 </body>
 </html>
+
